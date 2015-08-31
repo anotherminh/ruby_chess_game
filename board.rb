@@ -9,11 +9,13 @@ class Board
     populate_pieces
   end
 
-  def [](row, col)
+  def [](pos)
+    row, col = pos
     @grid[row][col]
   end
 
-  def []=(row, col, mark)
+  def []=(pos, mark)
+    row, col = pos
     @grid[row][col] = mark
   end
 
@@ -32,17 +34,19 @@ class Board
 
   def populate_pieces
     pos = [0, 4]
-    self[*pos] = King.new(:white, pos)
+    self[pos] = King.new(:white, pos)
   end
 
   def occupied?(pos)
-    self[*pos].occupied?
+    self[pos].occupied?
   end
 
   def move_piece(from, to)
-    piece = self[*from]
+    # debugger
+    piece = self[from]
     piece.pos = to
-    self[*from], self[*to] = self[*to], self[*from]
+    self[from] = self[to]
+    self[to] = piece
   end
 
   def inspect

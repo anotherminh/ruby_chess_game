@@ -1,3 +1,4 @@
+require 'byebug'
 require './board'
 require './player'
 require './display'
@@ -7,7 +8,8 @@ class Chess
 
   def initialize(players = nil)
     @board = Board.new
-    @display = Display(@board)
+    @display = Display.new(@board)
+    @player = HumanPlayer.new
   end
   # def print_out
   #   while true
@@ -22,34 +24,41 @@ class Chess
     @selected = false
     @moved = false
 
-    until selected
+    until @selected
       display.print_board
-      new_input = HumanPlayer.get_key
+      new_input = HumanPlayer.get_key(display.cursor_pos)
 
+      p @selected
+      p new_input
+      # debugger
       if new_input
         display.update_cursor(new_input)
       else
         selected_pos = display.cursor_pos
-        @selected = true if board[*selected_pos].occupied?
+        @selected = true if board.occupied?(selected_pos)
       end
+
     end
 
-    until moved
+    until @moved
       display.print_board
-      new_input = HumanPlayer.get_key
+      new_input = HumanPlayer.get_key(display.cursor_pos)
 
       if new_input
         display.update_cursor(new_input)
       else
+        # debugger
         new_pos = display.cursor_pos
-        unless board[*new_pos].occupied?
+        unless board.occupied?(new_pos)
           @moved = true
           board.move_piece(selected_pos, new_pos)
         end
       end
     end
+    display.print_board
+  end
 
-    @selected = false
-    @moved = false
+  def inspect
+    true
   end
 end

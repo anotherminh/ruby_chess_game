@@ -3,7 +3,7 @@ require 'colorize'
 class Piece
   attr_reader :value, :color
   attr_accessor :pos
-  
+
   def initialize(val, color, pos = [0, 0])
     @value = val
     @color = color
@@ -14,7 +14,7 @@ class Piece
   end
 
   def occupied?
-    self.is_a?(EmptySquare)
+    !self.is_a?(EmptySquare)
   end
 
   def to_s
@@ -41,6 +41,6 @@ end
 
 class EmptySquare < Piece
   def initialize(pos)
-    super('   ', :empty, pos)
+    super('  ', :empty, pos)
   end
 end

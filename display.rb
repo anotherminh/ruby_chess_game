@@ -30,6 +30,7 @@ class Display
     board.grid.each_with_index do |row, row_i|
       print_row(row, row_i)
     end
+    true
   end
 
   def print_row(row, row_i)
