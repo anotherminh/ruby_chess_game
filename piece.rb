@@ -10,7 +10,7 @@ class Piece
     @pos = pos
   end
 
-  def moves
+  def avail_moves
   end
 
   def occupied?
@@ -22,12 +22,18 @@ class Piece
   end
 end
 
+class EmptySquare < Piece
+  def initialize(pos)
+    super('  ', :empty, pos)
+  end
+end
+
 class King < Piece
   def initialize(color, pos = [0, 0])
     super("\u2654 ", color, pos)
   end
 
-  def moves
+  def avail_moves
     new_pos = []
     (-1..1).to_a.each do |x|
       (-1..1).to_a.each do |y|
@@ -36,11 +42,5 @@ class King < Piece
       end
     end
     new_pos
-  end
-end
-
-class EmptySquare < Piece
-  def initialize(pos)
-    super('  ', :empty, pos)
   end
 end
