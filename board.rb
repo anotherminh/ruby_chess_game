@@ -82,8 +82,8 @@ class Board
     on_board?(pos) && !occupied?(pos)
   end
 
-  def valid_selection?(pos)
-    on_board?(pos) && occupied?(pos)
+  def valid_selection?(color, pos)
+    on_board?(pos) && occupied?(pos) && self[pos].color == color
   end
 
   def avail_moves(pos)
@@ -98,6 +98,10 @@ class Board
       valid_moves << next_move unless dup_board.in_check?(color)
     end
     valid_moves
+  end
+
+  def valid_move?(from, to, color)
+    valid_moves(color, from).include?(to)
   end
 
   def find_king(color)

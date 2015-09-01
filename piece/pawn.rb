@@ -7,6 +7,6 @@ class Pawn < Piece
   end
 
   def avail_moves
-    [[]]
+    []
   end
 end
