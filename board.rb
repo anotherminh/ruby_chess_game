@@ -20,6 +20,7 @@ class Board
   end
 
   def on_board?(pos)
+    return false unless pos
     pos.all? { |coor| coor.between?(0, grid.size - 1) }
   end
 
@@ -40,6 +41,7 @@ class Board
   end
 
   def occupied?(pos)
+    return false unless pos
     self[pos].occupied?
   end
 

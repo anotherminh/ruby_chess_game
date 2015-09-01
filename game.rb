@@ -33,8 +33,8 @@ class Chess
       if new_input
         display.update_cursor(new_input) if board.on_board?(new_input)
       else
-        selected_pos = display.cursor_pos if board.on_board?(new_input)
-        @selected = true if board.valid_selection(selected_pos)
+        selected_pos = display.cursor_pos
+        @selected = true if board.valid_selection?(selected_pos)
       end
     end
     selected_pos
@@ -49,7 +49,7 @@ class Chess
         display.update_cursor(new_input)
       else
         new_pos = display.cursor_pos
-        unless board.valid_move?(new_pos)
+        if board.valid_move?(new_pos)
           @moved = true
           board.move_piece(selected_pos, new_pos)
         end
