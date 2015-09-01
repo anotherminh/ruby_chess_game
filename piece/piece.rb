@@ -17,6 +17,12 @@ class Piece
     [[]]
   end
 
+  def kill_move?(pos)
+    if board.on_board?(pos)
+      board.occupied?(pos) && board[pos].color != color
+    end
+  end
+
   def occupied?
     true
   end

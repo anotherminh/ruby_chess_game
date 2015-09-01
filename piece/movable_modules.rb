@@ -9,7 +9,8 @@ module Slidable
         new_valid = [new_valid[0] + delta[0], new_valid[1] + delta[1]]
       end
 
-      if board.on_board?(new_valid) && board[new_valid].color != color
+      if kill_move?(new_valid)
+        # board.on_board?(new_valid) && board[new_valid].color != color
         valid_moves << new_valid
       end
     end
@@ -23,7 +24,8 @@ module Steppable
     deltas.each do |delta|
       new_valid = [pos[0] + delta[0], pos[1] + delta[1]]
 
-      if board.on_board?(new_valid) && board[new_valid].color != color
+      if board.valid_move?(new_valid) || kill_move?(new_valid)
+        # board.on_board?(new_valid) && board[new_valid].color != color
         valid_moves << new_valid
       end
     end
