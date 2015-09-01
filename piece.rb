@@ -12,12 +12,12 @@ class Piece
     @board = board
   end
 
-  def avail_moves(current_pos, board)
-    nil
+  def avail_moves(deltas)
+    [[]]
   end
 
   def occupied?
-    !self.is_a?(EmptySquare)
+    true
   end
 
   def to_s
@@ -38,48 +38,55 @@ class EmptySquare < Piece
   def initialize(pos)
     super('  ', :empty, pos)
   end
+
+  def occupied?
+    false
+  end
+
+  def avail_moves
+    [[]]
+  end
 end
 
 class King < Piece
+  DELTAS = [[0, 1], [0, -1], [1, 0], [-1, 0]] + [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+  include Steppable
+
   def self.make_kings(board)
     [King.new(:white, board), King.new(:black, board)]
   end
 
-  def initialize(color, board)
-    pos = color == :white ? [7, 4] : [0, 4]
+  def initialize(color, pos = nil, board)
+    pos ||= color == :white ? [7, 4] : [0, 4]
     super("\u2654 ", color, pos, board)
   end
 
-  def avail_moves
-    new_pos = []
-    (-1..1).to_a.each do |x|
-      (-1..1).to_a.each do |y|
-        i, j = @pos
-        new_pos << [x + i, y + j] unless @pos == [x, y]
-      end
-    end
-    new_pos
+  def deltas
+    DELTAS
   end
 end
 
 class Queen < Piece
-  include HVSlidable
+  DELTAS = [[0, 1], [0, -1], [1, 0], [-1, 0]] + [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+  include Slidable
 
   def self.make_queens(board)
     [Queen.new(:white, board), Queen.new(:black, board)]
   end
 
-  def initialize(color, board)
-    pos = color == :white ? [7, 3] : [0, 3]
+  def initialize(color, pos = nil, board)
+    pos ||= color == :white ? [7, 3] : [0, 3]
     super("\u2655 ", color, pos, board)
   end
 
-  def avail_moves
+  def deltas
+    DELTAS
   end
 end
 
 class Rook < Piece
-  include HVSlidable
+  DELTAS = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+  include Slidable
 
   def self.make_rooks(board)
     [[0, 0], [7, 0], [0, 7], [7, 7]].map.with_index do |pos, i|
@@ -92,11 +99,15 @@ class Rook < Piece
     super("\u2656 ", color, pos, board)
   end
 
-  def avail_moves
+  def deltas
+    DELTAS
   end
 end
 
 class Bishop < Piece
+  DELTAS = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+  include Slidable
+
   def self.make_bishops(board)
     [[0, 2], [7, 2], [0, 5], [7, 5]].map.with_index do |pos, i|
       color = i.odd? ? :white : :black
@@ -108,11 +119,15 @@ class Bishop < Piece
     super("\u2657 ", color, pos, board)
   end
 
-  def avail_moves
+  def deltas
+    DELTAS
   end
 end
 
 class Knight < Piece
+  DELTAS = [[2, 1], [2, -1], [-2, 1], [-2, -1], [1, 2], [1, -2], [-1, 2], [-1, -2]]
+  include Steppable
+
   def self.make_knights(board)
     [[0, 1], [7, 1], [0, 6], [7, 6]].map.with_index do |pos, i|
       color = i.odd? ? :white : :black
@@ -124,7 +139,8 @@ class Knight < Piece
     super("\u2658 ", color, pos, board)
   end
 
-  def avail_moves
+  def deltas
+    DELTAS
   end
 end
 
@@ -145,6 +161,6 @@ class Pawn < Piece
   end
 
   def avail_moves
-
+    [[]]
   end
 end

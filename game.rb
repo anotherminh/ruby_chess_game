@@ -6,8 +6,8 @@ require './display'
 class Chess
   attr_reader :board, :display
 
-  def initialize(players = nil)
-    @board = Board.new
+  def initialize(players = nil, board = nil)
+    @board = board || Board.new
     @display = Display.new(@board)
     @player = HumanPlayer.new
   end
@@ -60,4 +60,24 @@ class Chess
   def inspect
     true
   end
+end
+
+if $PROGRAM_NAME == __FILE__
+  board = Board.new(false)
+  player = HumanPlayer.new
+  #debugger
+  game = Chess.new(player, board)
+
+  queen = Queen.new(:black, [5,6], board)
+  bishop = Bishop.new(:black, [0, 1], board)
+  rook = Rook.new(:black, [7, 0], board)
+  king = King.new(:white, [2, 3], board)
+  knight = Knight.new(:white, [6, 6], board)
+  board[[2, 3]] = king
+  board[[6, 6]] = knight
+  board[[5,6]] = queen
+  board[[0, 1]] = bishop
+  board[[7, 0]] = rook
+
+  game.play_round
 end

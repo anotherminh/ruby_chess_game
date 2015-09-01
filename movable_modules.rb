@@ -1,18 +1,37 @@
-module HVSlidable
-  def avail_moves(current_pos, board)
-    row = current_pos[0]
-    col = current_pos[1]
-    moves = []
+module Slidable
+  def avail_moves
+    valid_moves = []
+    deltas.each do |delta|
+      new_valid = [pos[0] + delta[0], pos[1] + delta[1]]
+      # debugger
+      while board.valid_move?(new_valid)
+        valid_moves << new_valid
+        new_valid = [new_valid[0] + delta[0], new_valid[1] + delta[1]]
+      end
 
-    (0..7).each do |other_i|
-      moves.push([row, other_i]) unless other_i == row
-      moves.push([other_i, col]) unless other_i == col
+      if board.on_board?(new_valid) && board[new_valid].color != color
+        valid_moves << new_valid
+      end
     end
-
-    moves
+    valid_moves
   end
 end
 
-module DiagSlidable
+module Steppable
+  def avail_moves
+    valid_moves = []
+    deltas.each do |delta|
+      new_valid = [pos[0] + delta[0], pos[1] + delta[1]]
+      # debugger
+      # while board.valid_move?(new_valid)
+      #   valid_moves << new_valid
+      #   new_valid = [new_valid[0] + delta[0], new_valid[1] + delta[1]]
+      # end
 
+      if board.on_board?(new_valid) && board[new_valid].color != color
+        valid_moves << new_valid
+      end
+    end
+    valid_moves
+  end
 end

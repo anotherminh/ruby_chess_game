@@ -3,10 +3,14 @@ require './piece'
 class Board
   attr_reader :grid
 
-  def initialize
+  def initialize(setup = true)
     @grid = Array.new(8) { Array.new(8) { "  " } }
-    populate_empty_squares
-    populate_pieces
+    if setup
+      populate_empty_squares
+      populate_pieces
+    else
+      populate_empty_squares
+    end
   end
 
   def [](pos)
@@ -54,11 +58,15 @@ class Board
   end
 
   def valid_move?(pos)
-    !occupied?(pos) && on_board?(pos)
+    on_board?(pos) && !occupied?(pos)
   end
 
   def valid_selection?(pos)
-    occupied?(pos) && on_board?(pos)
+    on_board?(pos) && occupied?(pos)
+  end
+
+  def avail_moves(pos)
+    self[pos].avail_moves
   end
 
   def inspect
