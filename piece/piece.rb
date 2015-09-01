@@ -19,7 +19,7 @@ class Piece
 
   def kill_move?(pos)
     if board.on_board?(pos)
-      board.occupied?(pos) && board[pos].color != color
+      return board.occupied?(pos) && board[pos].color != color
     end
     false
   end

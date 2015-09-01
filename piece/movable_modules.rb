@@ -8,7 +8,7 @@ module Slidable
         valid_moves << new_valid
         new_valid = [new_valid[0] + delta[0], new_valid[1] + delta[1]]
       end
-
+      # debugger
       if kill_move?(new_valid)
         # board.on_board?(new_valid) && board[new_valid].color != color
         valid_moves << new_valid
