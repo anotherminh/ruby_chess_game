@@ -26,7 +26,8 @@ class Display
   end
 
   def print_board(selected_pos = nil)
-    @avail_moves = board.avail_moves(@cursor_pos)
+    @valid_moves = board.valid_moves(board[@cursor_pos].color, @cursor_pos)
+    # @avail_moves = board.avail_moves(@cursor_pos)
     system 'clear'
     board.grid.each_with_index do |row, row_i|
       print_row(row, row_i, selected_pos)
@@ -38,7 +39,7 @@ class Display
 
   def print_row(row, row_i, selected_pos)
     row.each_with_index do |el, cell_i|
-      if @avail_moves.include?([row_i, cell_i])
+      if @valid_moves.include?([row_i, cell_i])
         print el.to_s.colorize( :background => :yellow)
       elsif selected_pos == [row_i, cell_i]
         print el.to_s.colorize( :background => :red)

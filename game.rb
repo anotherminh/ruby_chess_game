@@ -49,7 +49,7 @@ class Chess
         display.update_cursor(new_input)
       else
         new_pos = display.cursor_pos
-        if board.empty_square_on_board?(new_pos) 
+        if board.empty_square_on_board?(new_pos)
           @moved = true
           board.move_piece(selected_pos, new_pos)
         end
@@ -73,6 +73,7 @@ if $PROGRAM_NAME == __FILE__
   rook = Rook.new(:black, [0, 0], board)
   king = King.new(:white, [1, 3], board)
   knight = Knight.new(:white, [6, 6], board)
-
+  black_king = King.new(:black, [7, 7], board)
+  
   game.play_round
 end
