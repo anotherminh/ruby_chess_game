@@ -33,8 +33,10 @@ class Board
   end
 
   def populate_pieces
-    pos = [0, 4]
-    self[pos] = King.new(:white, pos)
+    Piece.make_all_pieces(self).each do |piece|
+      coor = piece.pos
+      self[coor] = piece
+    end
   end
 
   def occupied?(pos)
@@ -47,6 +49,10 @@ class Board
     piece.pos = to
     self[from] = self[to]
     self[to] = piece
+  end
+
+  def valid_move?(pos)
+    occupied?(pos) && on_board?(pos)
   end
 
   def inspect
