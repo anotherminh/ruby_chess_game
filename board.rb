@@ -38,7 +38,7 @@ class Board
   def populate_empty_squares
     grid.each_with_index do |row, i|
       row.each_with_index do |cell, j|
-        EmptySquare.new([i, j], self)
+        EmptySquare.new(:nope, [i, j], self)
       end
     end
     true
@@ -69,7 +69,13 @@ class Board
   end
 
   def move_piece(from, to)
-    self[from], self[to] = self[to], self[from]
+    if self[from].kill_move?(to)
+      # kill!!!
+      self[to] = self[from]
+      self[from] = EmptySquare.new(:nope, from, self)
+    else
+      self[from], self[to] = self[to], self[from]
+    end
   end
 
   def empty_square_on_board?(pos)
@@ -82,6 +88,46 @@ class Board
 
   def avail_moves(pos)
     self[pos].avail_moves
+  end
+
+  def valid_moves(color, cursor_pos)
+    valid_moves = []
+    avail_moves(cursor_pos).each do |next_move|
+      dup_board = self.dup
+      dup_board.move_piece(cursor_pos, next_move)
+      valid_moves << next_move unless dup_board.in_check?(color)
+    end
+    valid_moves
+  end
+
+  def find_king(color)
+    king = @grid.flatten.find do |piece|
+      piece.class == King && piece.color == color
+    end
+
+    king.pos
+  end
+
+  #color of the king that is possibly checked
+  def in_check?(color)
+    # debugger
+    enemy_color = color == :white ? :black : :white
+    enemy_pieces = @grid.flatten.select { |piece| piece.color == enemy_color }
+    enemy_next_avail_moves = []
+    enemy_pieces.each { |piece| enemy_next_avail_moves += piece.avail_moves }
+
+    my_king = find_king(color)
+    enemy_next_avail_moves.include?(my_king)
+  end
+
+  def dup
+    dup_board = Board.new(false)
+    @grid.each do |row|
+      row.each do |cell|
+        cell.dup(dup_board)
+      end
+    end
+    dup_board
   end
 
   def inspect

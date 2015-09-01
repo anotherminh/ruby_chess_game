@@ -1,6 +1,6 @@
 class HumanPlayer
-  def initialize(name = "Bozo")
-    @name = name
+  def initialize(color)
+    @color = color
   end
 
   # Reads keypresses from the user including 2 and 3 escape character sequences.

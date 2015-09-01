@@ -6,10 +6,10 @@ require './display'
 class Chess
   attr_reader :board, :display
 
-  def initialize(players = nil, board = nil)
+  def initialize(player, board = nil)
     @board = board || Board.new
     @display = Display.new(@board)
-    @player = HumanPlayer.new
+    @player = player
   end
 
   def play
@@ -49,7 +49,7 @@ class Chess
         display.update_cursor(new_input)
       else
         new_pos = display.cursor_pos
-        if board.valid_move?(new_pos)
+        if board.empty_square_on_board?(new_pos) 
           @moved = true
           board.move_piece(selected_pos, new_pos)
         end
@@ -64,20 +64,15 @@ end
 
 if $PROGRAM_NAME == __FILE__
   board = Board.new(false)
-  player = HumanPlayer.new
+  player = HumanPlayer.new(:white)
   #debugger
   game = Chess.new(player, board)
 
   queen = Queen.new(:black, [5,6], board)
-  bishop = Bishop.new(:black, [0, 1], board)
-  rook = Rook.new(:black, [7, 0], board)
-  king = King.new(:white, [2, 3], board)
+  #bishop = Bishop.new(:black, [0, 1], board)
+  rook = Rook.new(:black, [0, 0], board)
+  king = King.new(:white, [1, 3], board)
   knight = Knight.new(:white, [6, 6], board)
-  board[[2, 3]] = king
-  board[[6, 6]] = knight
-  board[[5,6]] = queen
-  board[[0, 1]] = bishop
-  board[[7, 0]] = rook
 
   game.play_round
 end

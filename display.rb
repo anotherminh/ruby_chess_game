@@ -31,6 +31,8 @@ class Display
     board.grid.each_with_index do |row, row_i|
       print_row(row, row_i, selected_pos)
     end
+    # debugger
+    p board.in_check?(:white)
     true
   end
 

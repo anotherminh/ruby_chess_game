@@ -1,3 +1,4 @@
+require 'byebug'
 require 'colorize'
 require_relative './movable_modules'
 
@@ -11,6 +12,11 @@ class Piece
     @pos = pos
     @board = board
     @board[pos] = self
+  end
+
+  def dup(dup_board)
+    # debuggerab
+    self.class.new(color, pos.dup, dup_board)
   end
 
   def avail_moves(deltas)
@@ -38,18 +44,18 @@ class Piece
     value.colorize(color)
   end
 
-  def self.make_all_pieces(board)
-    King.make_kings(board) +
-    Queen.make_queens(board) +
-    Bishop.make_bishops(board) +
-    Rook.make_rooks(board) +
-    Knight.make_knights(board) +
-    Pawn.make_pawns(board)
-  end
+  # def self.make_all_pieces(board)
+  #   King.make_kings(board) +
+  #   Queen.make_queens(board) +
+  #   Bishop.make_bishops(board) +
+  #   Rook.make_rooks(board) +
+  #   Knight.make_knights(board) +
+  #   Pawn.make_pawns(board)
+  # end
 end
 
 class EmptySquare < Piece
-  def initialize(pos, board)
+  def initialize(_, pos, board)
     super(:nope, pos, board)
     @value = '  '
   end
@@ -59,6 +65,6 @@ class EmptySquare < Piece
   end
 
   def avail_moves
-    [[]]
+    []
   end
 end
