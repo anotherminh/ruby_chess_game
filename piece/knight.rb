@@ -8,7 +8,7 @@ class Knight < Piece
 
   def initialize(color, pos, board)
     super(color, pos, board)
-    @value = "\u2658 "
+    @value = "\u265E "
   end
 
   def deltas

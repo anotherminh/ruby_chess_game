@@ -8,7 +8,7 @@ class Rook < Piece
 
   def initialize(color, pos, board)
     super(color, pos, board)
-    @value = "\u2656 "
+    @value = "\u265C "
   end
 
   def deltas

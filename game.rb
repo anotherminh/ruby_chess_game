@@ -16,7 +16,7 @@ class Chess
 
   def play
     #need to check if over or checkmate
-    while true
+    until board.check_mate?
       play_round
       switch_player!
     end
@@ -28,6 +28,13 @@ class Chess
     @selected_pos = choose_piece
     move_piece(@selected_pos)
     display.print_board
+    if board.in_check?(current_player.color)
+      puts "Checking!"
+      sleep(1)
+    elsif board.check_mate?
+    puts "Checkmate!~"
+      sleep(1)
+    end
   end
 
   def switch_player!
@@ -77,7 +84,7 @@ end
 if $PROGRAM_NAME == __FILE__
   # board = Board.new(false)
   board = Board.new
-  player1 = HumanPlayer.new(:white)
+  player1 = HumanPlayer.new(:red)
   player2 = HumanPlayer.new(:black)
   players = [player1, player2]
   #debugger

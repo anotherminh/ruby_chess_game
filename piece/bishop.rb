@@ -8,7 +8,7 @@ class Bishop < Piece
 
   def initialize(color, pos, board)
     super(color, pos, board)
-    @value = "\u2657 "
+    @value = "\u265D "
   end
 
   def deltas

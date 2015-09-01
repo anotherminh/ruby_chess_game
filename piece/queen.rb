@@ -7,7 +7,7 @@ class Queen < Piece
   def initialize(color, pos, board)
     # starting_pos [7, 3] [0, 3]
     super(color, pos, board)
-    @value = "\u2655 "
+    @value = "\u265B "
   end
 
   def deltas
