@@ -1,4 +1,10 @@
-require './piece'
+require_relative 'piece/piece'
+require_relative 'piece/knight'
+require_relative 'piece/queen'
+require_relative 'piece/king'
+require_relative 'piece/bishop'
+require_relative 'piece/rook'
+require_relative 'piece/pawn'
 
 class Board
   attr_reader :grid
@@ -30,17 +36,29 @@ class Board
 
   def populate_empty_squares
     grid.each_with_index do |row, i|
-      row.map!.with_index do |cell, j|
-        EmptySquare.new([i, j])
+      row.each_with_index do |cell, j|
+        EmptySquare.new([i, j], self)
       end
     end
     true
   end
 
   def populate_pieces
-    Piece.make_all_pieces(self).each do |piece|
-      coor = piece.pos
-      self[coor] = piece
+    King.new(:white, [7, 4], self)
+    King.new(:black, [0, 4], self)
+    Queen.new(:white, [7, 3], self)
+    Queen.new(:black, [0, 3], self)
+    [[7, 2], [7, 5]].each { |pos| Bishop.new(:white, pos, self) }
+    [[0, 2], [0, 5]].each { |pos| Bishop.new(:black, pos, self) }
+    [[7, 1], [7, 6]].each { |pos| Knight.new(:white, pos, self) }
+    [[0, 1], [0, 6]].each { |pos| Knight.new(:black, pos, self) }
+    [[7, 7], [7, 0]].each { |pos| Rook.new(:white, pos, self) }
+    [[0, 7], [0, 0]].each { |pos| Rook.new(:black, pos, self) }
+    [1, 6].each do |row_i|
+      color = row_i == 1 ? :black : :white
+      (0..7).to_a.each do |cell_i|
+        Pawn.new(color, [row_i, cell_i], self)
+      end
     end
   end
 
