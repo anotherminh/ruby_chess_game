@@ -4,7 +4,7 @@ module Slidable
     deltas.each do |delta|
       new_valid = [pos[0] + delta[0], pos[1] + delta[1]]
       # debugger
-      while board.valid_move?(new_valid)
+      while board.empty_square_on_board?(new_valid)
         valid_moves << new_valid
         new_valid = [new_valid[0] + delta[0], new_valid[1] + delta[1]]
       end
@@ -24,7 +24,7 @@ module Steppable
     deltas.each do |delta|
       new_valid = [pos[0] + delta[0], pos[1] + delta[1]]
 
-      if board.valid_move?(new_valid) || kill_move?(new_valid)
+      if board.empty_square_on_board?(new_valid) || kill_move?(new_valid)
         # board.on_board?(new_valid) && board[new_valid].color != color
         valid_moves << new_valid
       end

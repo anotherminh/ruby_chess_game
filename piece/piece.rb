@@ -21,6 +21,13 @@ class Piece
     if board.on_board?(pos)
       board.occupied?(pos) && board[pos].color != color
     end
+    false
+  end
+
+  def kill(pos)
+    if kill_move?(pos)
+
+    end
   end
 
   def occupied?

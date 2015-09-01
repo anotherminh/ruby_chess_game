@@ -26,6 +26,7 @@ class Board
 
   def []=(pos, mark)
     row, col = pos
+    mark.pos = pos
     @grid[row][col] = mark
   end
 
@@ -68,14 +69,10 @@ class Board
   end
 
   def move_piece(from, to)
-    # debugger
-    piece = self[from]
-    piece.pos = to
-    self[from] = self[to]
-    self[to] = piece
+    self[from], self[to] = self[to], self[from]
   end
 
-  def valid_move?(pos)
+  def empty_square_on_board?(pos)
     on_board?(pos) && !occupied?(pos)
   end
 
