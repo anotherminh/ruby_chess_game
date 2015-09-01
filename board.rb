@@ -20,7 +20,7 @@ class Board
   end
 
   def on_board?(pos)
-    pos[0] >= 0 && pos[0] < 8 && pos[1] >= 0 && pos[1] < 8
+    pos.all? { |coor| coor.between?(0, grid.size - 1) }
   end
 
   def populate_empty_squares
@@ -52,6 +52,10 @@ class Board
   end
 
   def valid_move?(pos)
+    !occupied?(pos) && on_board?(pos)
+  end
+
+  def valid_selection?(pos)
     occupied?(pos) && on_board?(pos)
   end
 

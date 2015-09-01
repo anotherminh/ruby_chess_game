@@ -31,10 +31,10 @@ class Chess
       new_input = HumanPlayer.get_key(display.cursor_pos)
 
       if new_input
-        display.update_cursor(new_input)
+        display.update_cursor(new_input) if board.on_board?(new_input)
       else
-        selected_pos = display.cursor_pos
-        @selected = true if board.occupied?(selected_pos)
+        selected_pos = display.cursor_pos if board.on_board?(new_input)
+        @selected = true if board.valid_selection(selected_pos)
       end
     end
     selected_pos
