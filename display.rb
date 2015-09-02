@@ -28,12 +28,10 @@ class Display
   def print_board(selected_pos = nil)
     highlight_center = selected_pos || @cursor_pos
     @valid_moves = board.valid_moves(board[highlight_center].color, highlight_center)
-    # @avail_moves = board.avail_moves(@cursor_pos)
     system 'clear'
     board.grid.each_with_index do |row, row_i|
       print_row(row, row_i, highlight_center)
     end
-    # debugger
     true
   end
 

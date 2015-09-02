@@ -4,19 +4,16 @@ require './player'
 require './display'
 
 class Chess
-  attr_reader :board, :display, :player1, :player2, :current_player
+  attr_reader :board, :display, :players
 
-  def initialize(players, board = nil)
-    @board = board || Board.new
+  def initialize(players, board = Board.new)
+    @board = board
     @display = Display.new(@board)
-    @player1 = players[0]
-    @player2 = players[1]
-    @current_player = player1
+    @players = players
   end
 
   def play
-    #need to check if over or checkmate
-    until board.check_mate?
+    until board.check_mate?(current_player.color)
       play_round
       switch_player!
     end
@@ -25,27 +22,24 @@ class Chess
   def play_round
     @selected = false
     @moved = false
-    @selected_pos = choose_piece
-    move_piece(@selected_pos)
+    selected_pos = choose_piece
+    move_piece(selected_pos)
     display.print_board
-    if board.in_check?(current_player.color)
-      puts "Checking!"
-      sleep(1)
-    elsif board.check_mate?
-    puts "Checkmate!~"
-      sleep(1)
-    end
+  end
+
+  def current_player
+    players[0]
   end
 
   def switch_player!
-    @current_player = @current_player == player1 ? player2 : player1
+    players.rotate!
   end
 
   def choose_piece
     selected_pos = nil
     until @selected
       display.print_board
-      # debugger
+
       new_input = HumanPlayer.get_key(display.cursor_pos)
 
       if new_input
@@ -60,15 +54,14 @@ class Chess
 
   def move_piece(selected_pos)
     until @moved
-      display.print_board(@selected_pos)
+      display.print_board(selected_pos)
       new_input = HumanPlayer.get_key(display.cursor_pos)
 
       if new_input
         display.update_cursor(new_input) if board.on_board?(new_input)
       else
         new_pos = display.cursor_pos
-        if board.valid_move?(@selected_pos, new_pos, current_player.color)
-          # board.empty_square_on_board?(new_pos)
+        if board.valid_move?(selected_pos, new_pos, current_player.color)
           @moved = true
           board.move_piece(selected_pos, new_pos)
         end
@@ -90,10 +83,11 @@ if $PROGRAM_NAME == __FILE__
   #debugger
   game = Chess.new(players, board)
 
+  # pawn = Pawn.new(:black, [4, 6], board)
   # queen = Queen.new(:black, [5,6], board)
   # #bishop = Bishop.new(:black, [0, 1], board)
   # rook = Rook.new(:black, [0, 0], board)
-  # king = King.new(:white, [1, 1], board)
+  # king = King.new(:red, [1, 1], board)
   # knight = Knight.new(:white, [6, 6], board)
   # black_king = King.new(:black, [7, 7], board)
 

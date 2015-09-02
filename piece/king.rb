@@ -2,6 +2,7 @@
 
 class King < Piece
   DELTAS = [[0, 1], [0, -1], [1, 0], [-1, 0]] + [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+
   include Steppable
 
   def initialize(color, pos, board)

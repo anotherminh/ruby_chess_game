@@ -10,7 +10,6 @@ module Slidable
       end
 
       if kill_move?(new_valid)
-        # board.on_board?(new_valid) && board[new_valid].color != color
         valid_moves << new_valid
       end
     end
@@ -25,7 +24,6 @@ module Steppable
       new_valid = [pos[0] + delta[0], pos[1] + delta[1]]
 
       if board.empty_square_on_board?(new_valid) || kill_move?(new_valid)
-        # board.on_board?(new_valid) && board[new_valid].color != color
         valid_moves << new_valid
       end
     end

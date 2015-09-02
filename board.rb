@@ -11,12 +11,8 @@ class Board
 
   def initialize(setup = true)
     @grid = Array.new(8) { Array.new(8) { "  " } }
-    if setup
-      populate_empty_squares
-      populate_pieces
-    else
-      populate_empty_squares
-    end
+    populate_empty_squares
+    populate_pieces if setup
   end
 
   def [](pos)
@@ -24,10 +20,10 @@ class Board
     @grid[row][col]
   end
 
-  def []=(pos, mark)
+  def []=(pos, piece)
     row, col = pos
-    mark.pos = pos
-    @grid[row][col] = mark
+    piece.pos = pos
+    @grid[row][col] = piece
   end
 
   def on_board?(pos)
@@ -57,7 +53,7 @@ class Board
     [[0, 7], [0, 0]].each { |pos| Rook.new(:black, pos, self) }
     [1, 6].each do |row_i|
       color = row_i == 1 ? :black : :red
-      (0..7).to_a.each do |cell_i|
+      (0..7).each do |cell_i|
         Pawn.new(color, [row_i, cell_i], self)
       end
     end
@@ -76,8 +72,8 @@ class Board
     else
       self[from], self[to] = self[to], self[from]
     end
-    #call moved on the moved piece
-    #only pawns respond to this method, other pieces don't do anything
+
+    self[to].move
   end
 
   def empty_square_on_board?(pos)
@@ -108,7 +104,7 @@ class Board
 
   def find_king(color)
     king = @grid.flatten.find do |piece|
-      piece.class == King && piece.color == color
+      piece.is_a?(King) && piece.color == color
     end
 
     king.pos
@@ -126,9 +122,9 @@ class Board
     enemy_next_avail_moves.include?(my_king)
   end
 
-  def check_mate?
-    kings = [self[find_king(:red)], self[find_king(:black)]]
-    kings.any? { |k| self.in_check?(k.color) && self.valid_moves(k.color, k.pos)}
+  def check_mate?(color)
+    my_pieces = @grid.flatten.select { |piece| piece.color == color }
+    my_pieces.all? { |piece| valid_moves(piece.color, piece.pos).empty? }
   end
 
   def dup

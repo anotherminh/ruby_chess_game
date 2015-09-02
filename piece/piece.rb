@@ -20,7 +20,7 @@ class Piece
   end
 
   def avail_moves(deltas)
-    [[]]
+    raise NotImplementedError
   end
 
   def kill_move?(pos)
@@ -30,11 +30,11 @@ class Piece
     false
   end
 
-  def kill(pos)
-    if kill_move?(pos)
-
-    end
-  end
+  # def kill(pos)
+  #   if kill_move?(pos)
+  #
+  #   end
+  # end
 
   def occupied?
     true
@@ -44,14 +44,8 @@ class Piece
     value.colorize(color)
   end
 
-  # def self.make_all_pieces(board)
-  #   King.make_kings(board) +
-  #   Queen.make_queens(board) +
-  #   Bishop.make_bishops(board) +
-  #   Rook.make_rooks(board) +
-  #   Knight.make_knights(board) +
-  #   Pawn.make_pawns(board)
-  # end
+  def move
+  end
 end
 
 class EmptySquare < Piece
