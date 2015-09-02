@@ -9,10 +9,15 @@ class Pawn < Piece
   end
 
   def avail_moves
-    forward = @deltas.map do |delta|
-      pos.zip(delta).map { |arr| arr.inject(:+) }
+    forwards = []
+
+    @deltas.each do |delta|
+      new_valid = pos.zip(delta).map { |arr| arr.inject(:+) }
+      break if !board.empty_square_on_board?(new_valid)
+      forwards << new_valid
     end
-    forward + avail_kill_moves
+
+    forwards + avail_kill_moves
   end
 
   def avail_kill_moves
