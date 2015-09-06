@@ -40,7 +40,7 @@ class Chess
     until @selected
       display.print_board
 
-      new_input = HumanPlayer.get_key(display.cursor_pos)
+      new_input = HumanPlayer.get_key(display.cursor_pos) 
 
       if new_input
         display.update_cursor(new_input) if board.on_board?(new_input)
@@ -77,7 +77,7 @@ end
 if $PROGRAM_NAME == __FILE__
   # board = Board.new(false)
   board = Board.new
-  player1 = HumanPlayer.new(:red)
+  player1 = HumanPlayer.new(:white)
   player2 = HumanPlayer.new(:black)
   players = [player1, player2]
   #debugger

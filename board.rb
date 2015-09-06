@@ -41,18 +41,18 @@ class Board
   end
 
   def populate_pieces
-    King.new(:red, [7, 4], self)
+    King.new(:white, [7, 4], self)
     King.new(:black, [0, 4], self)
-    Queen.new(:red, [7, 3], self)
+    Queen.new(:white, [7, 3], self)
     Queen.new(:black, [0, 3], self)
-    [[7, 2], [7, 5]].each { |pos| Bishop.new(:red, pos, self) }
+    [[7, 2], [7, 5]].each { |pos| Bishop.new(:white, pos, self) }
     [[0, 2], [0, 5]].each { |pos| Bishop.new(:black, pos, self) }
-    [[7, 1], [7, 6]].each { |pos| Knight.new(:red, pos, self) }
+    [[7, 1], [7, 6]].each { |pos| Knight.new(:white, pos, self) }
     [[0, 1], [0, 6]].each { |pos| Knight.new(:black, pos, self) }
-    [[7, 7], [7, 0]].each { |pos| Rook.new(:red, pos, self) }
+    [[7, 7], [7, 0]].each { |pos| Rook.new(:white, pos, self) }
     [[0, 7], [0, 0]].each { |pos| Rook.new(:black, pos, self) }
     [1, 6].each do |row_i|
-      color = row_i == 1 ? :black : :red
+      color = row_i == 1 ? :black : :white
       (0..7).each do |cell_i|
         Pawn.new(color, [row_i, cell_i], self)
       end
@@ -112,8 +112,9 @@ class Board
 
   #color of the king that is possibly checked
   def in_check?(color)
+    
     # debugger
-    enemy_color = color == :red ? :black : :red
+    enemy_color = color == :white ? :black : :white
     enemy_pieces = @grid.flatten.select { |piece| piece.color == enemy_color }
     enemy_next_avail_moves = []
     enemy_pieces.each { |piece| enemy_next_avail_moves += piece.avail_moves }
