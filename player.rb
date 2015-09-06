@@ -1,10 +1,6 @@
+require_relative 'display'
+
 class HumanPlayer
-  attr_reader :color
-
-  def initialize(color)
-    @color = color
-  end
-
   # Reads keypresses from the user including 2 and 3 escape character sequences.
   def self.read_char
     STDIN.echo = false
@@ -45,4 +41,62 @@ class HumanPlayer
     end
     new_pos
   end
+
+  attr_reader :color
+
+  def initialize(color)
+    @color = color
+  end
+
+  def show_display(display)
+    @display = display
+  end
+
+  def make_move(board)
+    @board = board
+    @selected = false
+    @moved = false
+    choose_piece
+    move_piece
+  end
+
+  def choose_piece
+    selected_pos = nil
+    until @selected
+      display.print_board
+
+      new_input = HumanPlayer.get_key(display.cursor_pos)
+
+      if new_input
+        display.update_cursor(new_input) if board.on_board?(new_input)
+      else
+        @selected_pos = display.cursor_pos
+        @selected = true if board.valid_selection?(color, @selected_pos)
+      end
+    end
+    selected_pos
+  end
+
+  def move_piece
+    until @moved
+      display.print_board(selected_pos)
+      new_input = HumanPlayer.get_key(display.cursor_pos)
+
+      if new_input
+        display.update_cursor(new_input) if board.on_board?(new_input)
+      else
+        new_pos = display.cursor_pos
+        if new_pos == @selected_pos
+          @selected = false
+          choose_piece
+        elsif board.valid_move?(@selected_pos, new_pos, color)
+          @moved = true
+          board.move_piece(@selected_pos, new_pos)
+        end
+      end
+    end
+  end
+
+  private
+  attr_accessor :display, :board, :selected_pos
 end

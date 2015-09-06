@@ -8,7 +8,7 @@ class Display
 
   def initialize(board)
     @board = board
-    @cursor_pos = [0, 0]
+    @cursor_pos = [7, 7]
     @selected_pos = nil
   end
 

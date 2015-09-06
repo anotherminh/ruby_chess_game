@@ -112,7 +112,7 @@ class Board
 
   #color of the king that is possibly checked
   def in_check?(color)
-    
+
     # debugger
     enemy_color = color == :white ? :black : :white
     enemy_pieces = @grid.flatten.select { |piece| piece.color == enemy_color }
