@@ -13,7 +13,7 @@ To select your move, use the arrow keys. To select or unselect a piece/move, pre
 
 ###Code Highlights
 The pieces' behaviors have overlapping logic. So, I allow them to inherit
-from 
+from the Piece parent class.
 
 For example, the king and the pawn
 are both "stepping" pieces, in the sense that they can only move one square at a time.
