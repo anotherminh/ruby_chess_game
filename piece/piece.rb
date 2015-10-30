@@ -15,7 +15,6 @@ class Piece
   end
 
   def dup(dup_board)
-    # debuggerab
     self.class.new(color, pos.dup, dup_board)
   end
 
@@ -29,12 +28,6 @@ class Piece
     end
     false
   end
-
-  # def kill(pos)
-  #   if kill_move?(pos)
-  #
-  #   end
-  # end
 
   def occupied?
     true
