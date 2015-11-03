@@ -6,7 +6,6 @@ This is a 2-player chess game, playable from the Terminal. To play, simply
 download the file as .zip, then open up your terminal and run this line
 from the game's directory:
 
-
 `ruby game.rb`
 
 To select your move, use the arrow keys. To select or unselect a piece/move, press Enter.
@@ -16,7 +15,8 @@ The pieces' behaviors have overlapping logic. So, I allow them to inherit
 from the Piece parent class, which holds the default methods for checking
 for kill moves and occupied squares.
 
-`def kill_move?(pos)
+<pre><code>
+def kill_move?(pos)
   if board.on_board?(pos)
     return board.occupied?(pos) && board[pos].color != color
   end
@@ -26,18 +26,20 @@ end
 def occupied?
   true
 end
-`
+</pre></code>
 
 Of course, the Piece parent class also defines the initialize method,
 because every piece needs to store the same info:
 
-`def initialize(color, pos, board)
+<pre><code>
+def initialize(color, pos, board)
   @value = nil
   @color = color
   @pos = pos
   @board = board
   @board[pos] = self
-end`
+end
+</pre></code>
 
 I also factor out the shared logic for moves at a lower level (into modules).
 An example is the king and the pawn.
@@ -45,7 +47,8 @@ They are both "stepping" pieces, in the sense that they can only move one square
 (The pawn can move two on its first move, but that's just extra code in the pawn
 class that overrides the module).
 
-`module Slidable
+<pre><code>
+module Slidable
   def avail_moves
     valid_moves = []
     deltas.each do |delta|
@@ -62,13 +65,15 @@ class that overrides the module).
     end
     valid_moves
   end
-end`
+end
+</pre></code>
 
 Another example is the bishop, rook and queen, which
 are all "sliding" pieces: they can move for as many steps as possible (without
 jumping over other pieces) in some specified direction.
 
-`module Steppable
+<pre><code>
+module Steppable
   def avail_moves
     valid_moves = []
     deltas.each do |delta|
@@ -80,13 +85,15 @@ jumping over other pieces) in some specified direction.
     end
     valid_moves
   end
-end`
+end
+</pre></code>
 
 Instead of having to type-check my moves on the board when interacting with
 empty squares, I wrote a null object that can handle the same sort of
 functions that are called on piece object when generating/checking for valid moves:
 
-`class EmptySquare < Piece
+<pre><code>
+class EmptySquare < Piece
   def initialize(_, pos, board)
     super(:nope, pos, board)
     @value = '  '
@@ -99,4 +106,5 @@ functions that are called on piece object when generating/checking for valid mov
   def avail_moves
     []
   end
-end`
+end
+</pre></code>
